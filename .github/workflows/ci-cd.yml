@@ -16,8 +16,7 @@ permissions:
   contents: read
   packages: write
 
-env:
-  REGISTRO: ghcr.io/${{ github.repository_owner }}
+# El registro (GHCR) exige el dueño en minúsculas: se calcula en cada job que lo usa.
 
 jobs:
   secretos:
@@ -74,6 +73,8 @@ jobs:
       matrix: { servicio: [panel, anomalias] }
     steps:
       - uses: actions/checkout@v4
+      - name: Registro en minúsculas
+        run: echo "REGISTRO=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_ENV"
       - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         if: github.ref == 'refs/heads/main'
@@ -89,7 +90,8 @@ jobs:
   desplegar:
     name: Desplegar en el VPS
     needs: [imagenes, firmware]
-    if: github.ref == 'refs/heads/main'
+    # Se activa al crear la variable del repositorio DESPLEGAR=true y los secretos VPS_HOST / VPS_SSH_KEY
+    if: github.ref == 'refs/heads/main' && vars.DESPLEGAR == 'true'
     runs-on: ubuntu-latest
     environment: produccion          # requiere aprobación manual en GitHub
     steps:
