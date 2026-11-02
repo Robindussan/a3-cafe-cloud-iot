@@ -1,0 +1,19 @@
+﻿79 dBm  canal  6
+     Fernando Medina           -81 dBm  canal 11
+[WiFi] Conectando a AgroTecnet-Fog
+[WiFi] Conectado. IP 192.168.50.227  RSSI -83 dBm  canal 6
+[MEM] Heap libre antes de TLS: 205060 B
+
+[marquesina-01] Conectando a fog.finca:8883 (TLS) ... falló (rc=-2) SSL - The connection indicated an EOF
+[Hora] Esperando NTP (o 60 s con el DS3231): aún no se publica
+[NTP] Hora sincronizada con 192.168.50.1: 1793644069 (UTC), DS3231 ajustado
+[marquesina-02] Conectando a fog.finca:8883 (TLS) ... conectado. Heap libre 167688 B (esta conexión usó ~34792 B)
+[marquesina-02] estado -> {"id":"marquesina-02","estado":"online","ts":1793644070566,"fw":"3.0.0","modo":"fog","ip":"192.168.50.227","rssi":-80,"heap":164728,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-03] Conectando a fog.finca:8883 (TLS) ... conectado. Heap libre 130816 B (esta conexión usó ~36968 B)
+[marquesina-03] estado -> {"id":"marquesina-03","estado":"online","ts":1793644081780,"fw":"3.0.0","modo":"fog","ip":"192.168.50.227","rssi":-82,"heap":127844,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-02] telemetria (ok) -> {"id":"marquesina-02","ts":1793644081853,"seq":1,"temp":35.8,"hr":42.3,"lux":2,"co":10.2,"rssi":-82,"m":"c"}
+[marquesina-03] telemetria (ok) -> {"id":"marquesina-03","ts":1793644081856,"seq":1,"temp":33.8,"hr":47.9,"lux":3,"co":9.4,"rssi":-82,"m":"c"}
+[marquesina-01] Conectando a fog.finca:8883 (TLS) ... conectado. Heap libre 91168 B (esta conexión usó ~32972 B)
+[marquesina-01] estado -> {"id":"marquesina-01","estado":"online","ts":1793644096218,"fw":"3.0.0","modo":"fog","ip":"192.168.50.227","rssi":-78,"heap":88192,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-01] telemetria (ok) -> {"id":"marquesina-01","ts":1793644096293,"seq":1,"temp":34.6,"hr":45.8,"lux":2,"co":9.7,"rssi":-78,"m":"c"}
+

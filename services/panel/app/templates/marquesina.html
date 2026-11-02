@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block titulo %}{{ m.nombre }}{% endblock %}
+{% block encabezado %}{{ m.nombre }}{% endblock %}
+{% block subtitulo %}{{ m.finca }} · {{ m.asociado }} · gemelo digital e histórico{% endblock %}
+{% block contenido %}
+<div class="detalle" id="detalle" data-id="{{ m.id }}">
+  <div class="tarjeta gemelo" id="gemelo">
+    <div class="hud">
+      <div><h2>Gemelo digital</h2><div class="muted">Arrastre para girar · clic y rueda para acercar</div></div>
+      <span class="pastilla p-neutra" id="g-estado">cargando</span>
+    </div>
+    <div class="leyenda">
+      <span><i style="background:linear-gradient(90deg,#6fb3dc,#f2c14e,#ef6a55)"></i>Aire: fresco → caliente</span>
+      <span><i style="background:linear-gradient(90deg,#7fa9c9,#d9b38c)"></i>Café: húmedo → seco</span>
+      <span><i style="background:#f2c14e"></i>Radiación solar</span>
+      <span><i style="background:#ef6a55"></i>CO de la estufa</span>
+    </div>
+  </div>
+  <div class="lado">
+    <div class="tarjeta kpi"><span class="eti">Temperatura</span><span class="val num" id="v-temp">–</span><span class="sub" id="s-temp">&nbsp;</span></div>
+    <div class="tarjeta kpi"><span class="eti">Humedad relativa</span><span class="val num" id="v-hr">–</span><span class="sub" id="s-hr">&nbsp;</span></div>
+    <div class="tarjeta kpi"><span class="eti">Radiación solar</span><span class="val num" id="v-lux">–</span><span class="sub" id="s-lux">&nbsp;</span></div>
+    <div class="tarjeta kpi"><span class="eti">Monóxido de carbono</span><span class="val num" id="v-co">–</span><span class="sub" id="s-co">&nbsp;</span></div>
+    <div class="tarjeta kpi"><span class="eti">Nodo</span><span class="sub" id="v-nodo">–</span></div>
+  </div>
+</div>
+
+<div class="tarjeta graficas">
+  <div class="tit">
+    <h2>Histórico <span class="muted" id="resolucion" style="font-weight:500;font-size:13px"></span></h2>
+    <div class="segmentado" id="rangos">
+      <button data-h="6">6 h</button><button data-h="24" class="activo">24 h</button>
+      <button data-h="168">7 días</button><button data-h="720">30 días</button>
+    </div>
+  </div>
+  <div class="cuerpo rejilla r-2">
+    <div class="g" id="g-temp"></div><div class="g" id="g-hr"></div>
+    <div class="g" id="g-lux"></div><div class="g" id="g-co"></div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/comun.js"></script>
+<script type="module" src="/static/js/marquesina.js"></script>
+<script src="/static/vendor/echarts.min.js" async id="echarts"></script>
+{% endblock %}

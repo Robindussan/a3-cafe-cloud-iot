@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block titulo %}Resumen{% endblock %}
+{% block encabezado %}Hola, {{ u.nombre.split(' ')[0] }}{% endblock %}
+{% block subtitulo %}Estado del secado en {{ marquesinas|length }} marquesina{{ 's' if marquesinas|length != 1 }} · se actualiza cada 10 s{% endblock %}
+{% block contenido %}
+<div class="rejilla r-4" id="kpis" data-rol="{{ u.rol }}">
+  <div class="tarjeta kpi"><span class="eti">Marquesinas en línea</span><span class="val num" id="k-online">–</span><span class="sub" id="k-online-sub">&nbsp;</span></div>
+  <div class="tarjeta kpi"><span class="eti">Temperatura media</span><span class="val num" id="k-temp">–</span><span class="sub" id="k-temp-sub">&nbsp;</span></div>
+  <div class="tarjeta kpi"><span class="eti">Alertas 24 h</span><span class="val num" id="k-alertas">–</span><span class="sub" id="k-alertas-sub">&nbsp;</span></div>
+  {% if u.rol != 'caficultor' %}
+  <div class="tarjeta kpi"><span class="eti">Latencia nodo → nube</span><span class="val num" id="k-lat">–</span><span class="sub" id="k-lat-sub">p50 / p95 últimas 24 h</span></div>
+  {% else %}
+  <div class="tarjeta kpi"><span class="eti">Radiación solar</span><span class="val num" id="k-luz">–</span><span class="sub">promedio de sus marquesinas</span></div>
+  {% endif %}
+</div>
+
+{% if u.rol != 'caficultor' %}
+<div class="tarjeta" id="sli">
+  <div class="tit"><h2>Objetivos de servicio (SLI / SLO)</h2>
+    <div class="segmentado" id="sli-rango"><button data-h="24" class="activo">24 h</button><button data-h="168">7 días</button></div></div>
+  <div class="cuerpo rejilla r-4">
+    <div class="medida"><div class="e">SLI-1 · lecturas en &lt; 2 s</div><div class="v num" data-sli="lat">–</div>
+      <div class="barra"><i data-sli-barra="lat" style="width:0"></i></div><div class="faint" style="font-size:12px;margin-top:6px" data-sli-sub="lat">SLO 95 %</div></div>
+    {% for m in marquesinas %}
+    <div class="medida"><div class="e">SLI-2 · datos cada 10 min · {{ m.id[-2:] }}</div><div class="v num" data-sli="{{ m.id }}">–</div>
+      <div class="barra"><i data-sli-barra="{{ m.id }}" style="width:0"></i></div><div class="faint" style="font-size:12px;margin-top:6px" data-sli-sub="{{ m.id }}">SLO 99 %</div></div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="rejilla r-3" id="marquesinas">
+  {% for m in marquesinas %}
+  <a class="tarjeta marq" href="/marquesina/{{ m.id }}" data-id="{{ m.id }}">
+    <div class="cab">
+      <div><h3>{{ m.nombre }}</h3><p>{{ m.finca }} · {{ m.asociado }}</p></div>
+      <span class="pastilla p-neutra" data-campo="estado">sin datos</span>
+    </div>
+    <div class="temp num"><b data-campo="temp">–</b><span>°C dentro de la marquesina</span></div>
+    <div class="medidas">
+      <div class="medida"><div class="e">Humedad</div><div class="v num" data-campo="hr">–</div><div class="barra"><i data-barra="hr" style="width:0"></i></div></div>
+      <div class="medida"><div class="e">Luz solar</div><div class="v num" data-campo="lux">–</div><div class="barra"><i data-barra="lux" style="width:0"></i></div></div>
+      <div class="medida"><div class="e">CO</div><div class="v num" data-campo="co">–</div><div class="barra"><i data-barra="co" style="width:0"></i></div></div>
+    </div>
+    <div class="spark" data-spark="{{ m.id }}"></div>
+    <div class="pie"><span data-campo="hace">–</span><span>Ver gemelo digital →</span></div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/comun.js"></script>
+<script src="/static/js/resumen.js"></script>
+<script src="/static/vendor/echarts.min.js" async id="echarts"></script>
+{% endblock %}

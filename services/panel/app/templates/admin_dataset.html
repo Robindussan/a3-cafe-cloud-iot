@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}Dataset ML{% endblock %}
+{% block encabezado %}Dataset para machine learning{% endblock %}
+{% block subtitulo %}Exporta la telemetría cruda con columnas de alertas, para entrenar p. ej. el modelo de tiempo restante de secado{% endblock %}
+{% block acciones %}{% endblock %}
+{% block contenido %}
+<div class="rejilla r-4">
+  <div class="tarjeta kpi"><span class="eti">Lecturas guardadas</span><span class="val num">{{ '{:,}'.format(rango.filas).replace(',', '.') }}</span><span class="sub">tabla telemetria</span></div>
+  <div class="tarjeta kpi"><span class="eti">Desde</span><span class="val num" style="font-size:20px">{{ rango.desde.astimezone(tz).strftime('%d/%m/%Y %H:%M') if rango.desde else '–' }}</span></div>
+  <div class="tarjeta kpi"><span class="eti">Hasta</span><span class="val num" style="font-size:20px">{{ rango.hasta.astimezone(tz).strftime('%d/%m/%Y %H:%M') if rango.hasta else '–' }}</span></div>
+  <div class="tarjeta kpi"><span class="eti">Por marquesina</span><span class="sub">{% for p in por_m %}{{ p.marquesina[-2:] }}: {{ p.filas }}{{ ' · ' if not loop.last }}{% endfor %}</span></div>
+</div>
+<form class="tarjeta" method="get" action="/admin/dataset.csv">
+  <div class="tit"><h2>Descargar CSV</h2></div>
+  <div class="cuerpo form-fila">
+    <label>Desde (hora Colombia)<input type="datetime-local" name="desde" value="{{ rango.desde.astimezone(tz).strftime('%Y-%m-%dT%H:%M') if rango.desde else '' }}"></label>
+    <label>Hasta<input type="datetime-local" name="hasta"></label>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">{% for m in todas %}<label class="check"><input type="checkbox" name="marquesinas" value="{{ m.id }}" checked>{{ m.nombre }}</label>{% endfor %}</div>
+    <button class="boton primario">Descargar dataset</button>
+  </div>
+</form>
+<div class="tarjeta">
+  <div class="tit"><h2>Columnas</h2></div>
+  <div class="cuerpo tabla-scroll">
+    <table>
+      <tbody>
+        <tr><td><code>ts_utc</code>, <code>ts_local</code></td><td class="muted">Hora de la lectura en el nodo (ISO 8601, UTC y Colombia).</td></tr>
+        <tr><td><code>marquesina</code>, <code>seq</code></td><td class="muted">Identificador del nodo y número de secuencia (sirve para detectar pérdidas).</td></tr>
+        <tr><td><code>temp</code>, <code>hr</code>, <code>lux</code>, <code>co</code>, <code>rssi</code></td><td class="muted">°C, % HR, lux, ppm de CO y señal WiFi en dBm. Vacío si el sensor falló.</td></tr>
+        <tr><td><code>motivo</code></td><td class="muted">c = cambio (banda muerta), l = latido, p = periódico, f = forzado.</td></tr>
+        <tr><td><code>latencia_ms</code></td><td class="muted">Del nodo a la base de datos (incluye el fog y el bridge).</td></tr>
+        <tr><td><code>fuera_temp_max</code>, <code>fuera_hr_max</code>, <code>fuera_co_max</code></td><td class="muted">1 si la lectura supera el umbral vigente (etiqueta reproducible).</td></tr>
+        <tr><td><code>alerta_temp_alta</code>, <code>alerta_hr_alta</code>, <code>alerta_co_alto</code>, <code>alerta_cualquiera</code></td><td class="muted">1 si esa lectura generó una alerta registrada (antes del antirebote).</td></tr>
+        <tr><td><code>anomalia</code>, <code>anomalia_variables</code></td><td class="muted">1 si el servicio de anomalías marcó la lectura y en qué variables.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

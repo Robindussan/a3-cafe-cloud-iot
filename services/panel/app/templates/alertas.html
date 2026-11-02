@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block titulo %}Alertas{% endblock %}
+{% block encabezado %}Alertas{% endblock %}
+{% block subtitulo %}Últimas 300 · generadas por Node-RED con los umbrales vigentes y antirebote de 10 min{% endblock %}
+{% block acciones %}{% endblock %}
+{% block contenido %}
+{% set nombres = {'temp_alta': 'Temperatura alta', 'temp_baja': 'Temperatura baja', 'hr_alta': 'Humedad alta', 'co_alto': 'CO alto', 'offline': 'Desconexión', 'sin_datos': 'Sin datos',
+                  'anomalia_temp': 'Anomalía temperatura', 'anomalia_hr': 'Anomalía humedad', 'anomalia_lux': 'Anomalía luz', 'anomalia_co': 'Anomalía CO'} %}
+<div class="tarjeta">
+  <div class="cuerpo tabla-scroll">
+    {% if not alertas %}<p class="muted">No hay alertas registradas.</p>{% else %}
+    <table>
+      <thead><tr><th>Fecha</th><th>Marquesina</th><th>Tipo</th><th>Valor</th><th>Mensaje</th><th>Canales</th><th>Estado</th></tr></thead>
+      <tbody>
+      {% for a in alertas %}
+        <tr>
+          <td class="num">{{ a.ts.astimezone(tz).strftime('%d/%m %H:%M:%S') }}</td>
+          <td>{{ a.marquesina }}</td>
+          <td><span class="pastilla {{ 'p-aviso' if a.tipo in ('offline', 'sin_datos') else 'p-mal' }}">{{ nombres.get(a.tipo, a.tipo) }}</span></td>
+          <td class="num">{{ '%.1f'|format(a.valor) if a.valor is not none else '–' }}{% if a.umbral is not none %} <span class="faint">/ {{ '%g'|format(a.umbral) }}</span>{% endif %}</td>
+          <td class="muted" style="max-width:420px">{{ a.mensaje.split(': ', 1)[-1].rsplit(' · ', 1)[0] }}</td>
+          <td style="white-space:nowrap">
+            <span class="pastilla p-neutra" title="MQTT cafe/alertas y base de datos">MQTT</span>
+            <span class="pastilla {{ 'p-ok' if a.telegram else 'p-neutra' }}" title="{{ 'Entregado' if a.telegram else 'No entregado' }}">Telegram</span>
+            <span class="pastilla {{ 'p-ok' if a.whatsapp else 'p-neutra' }}" title="{{ 'Entregado' if a.whatsapp else 'No entregado' }}">WhatsApp</span>
+          </td>
+          <td>
+            {% if a.reconocida %}<span class="faint">Reconocida por {{ a.reconocida_por }}</span>
+            {% elif u.rol in ('admin', 'tecnico') %}
+              <form method="post" action="/alertas/{{ a.id }}/reconocer"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="boton chico">Reconocer</button></form>
+            {% else %}<span class="pastilla p-aviso">Abierta</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

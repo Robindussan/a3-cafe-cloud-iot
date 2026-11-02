@@ -1,0 +1,21 @@
+# Servicio de detección de anomalías (puntaje z). Sin puertos: habla con emqx:1883 y timescaledb:5432
+# por la red interna. La versión del modelo (ventana/umbral) va en la imagen y en el campo "metodo".
+services:
+  anomalias:
+    build: .
+    image: agrotecnet/anomalias-cafe:1.0.0
+    container_name: anomalias
+    restart: always
+    env_file:
+      - /root/a3_secretos/anomalias.env   # MQTT_USER/PASS (svc-anomalias), PG_USER/PASS (app_anomalias)
+    environment:
+      - VENTANA=60
+      - MINIMO=20
+      - UMBRAL_Z=3.0
+    read_only: true
+    networks:
+      - iot_network
+
+networks:
+  iot_network:
+    external: true

@@ -1,0 +1,20 @@
+services:
+  nanomq:
+    image: emqx/nanomq:0.25.7-full   # -full: incluye mbedTLS (TLS en listener y bridge)
+    container_name: nanomq
+    restart: always
+    command: ["--conf", "/etc/nanomq.conf"]
+    ports:
+      - "8883:8883"     # MQTT/TLS para los nodos (1883 queda solo en la red Docker)
+    volumes:
+      - /home/robin/a3/fog/nanomq/nanomq.conf:/etc/nanomq.conf:ro
+      - /home/robin/a3/fog/nanomq/nanomq_pwd.conf:/etc/nanomq_pwd.conf:ro
+      - /home/robin/a3/fog/nanomq/nanomq_acl.conf:/etc/nanomq_acl.conf:ro
+      - /home/robin/a3/fog/nanomq/certs:/etc/certs:ro
+      - /home/robin/a3/fog/nanomq/cache:/var/lib/nanomq
+    networks:
+      - iot_network
+
+networks:
+  iot_network:
+    external: true

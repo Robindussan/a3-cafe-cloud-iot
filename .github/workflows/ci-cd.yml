@@ -1,0 +1,106 @@
+# CI/CD del proyecto A3 (secado de café).
+#  - CI en cada push / pull request: revisa secretos, sintaxis Python/JS, compila el firmware del
+#    ESP32 con datos de ejemplo y construye las imágenes del panel y del servicio de anomalías.
+#  - CD solo en main y con aprobación manual (environment "produccion"): publica las imágenes en
+#    GHCR con la versión del commit y las despliega en el VPS por SSH.
+# Secretos del repositorio (Settings > Secrets): VPS_HOST, VPS_SSH_KEY (llave de despliegue).
+name: ci-cd
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRO: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  secretos:
+    name: Sin credenciales en el repositorio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Archivos que nunca deben versionarse
+        run: |
+          ! git ls-files | grep -E '(^|/)(secrets\.h|ca_fog\.h|\.env|panel\.env|nodered\.env|.*\.key|passwd)$'
+
+  revisar:
+    name: Sintaxis Python y JavaScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m compileall -q services
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Flujos de Node-RED y JS del panel
+        run: |
+          node -e "const f=require('./cloud/nodered/flujos_a3.js'); if(!Array.isArray(f)||!f.length) process.exit(1); console.log(f.length+' nodos')"
+          for js in services/panel/app/static/js/*.js; do node --check "$js" 2>/dev/null || node --input-type=module --check < "$js"; done
+
+  firmware:
+    name: Compilar firmware ESP32-C3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Núcleo esp32 y librerías
+        run: |
+          arduino-cli core update-index --additional-urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core install esp32:esp32@3.0.4 --additional-urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli lib install "PubSubClient@2.8" "ArduinoJson@7.4.1" "DHT sensor library@1.4.6" "Adafruit Unified Sensor" "RTClib@2.1.4"
+      - name: Compilar con secretos de ejemplo
+        run: |
+          cd firmware/esp32_marquesina
+          cp secrets.h.example secrets.h && cp ca_fog.h.example ca_fog.h
+          arduino-cli compile --fqbn esp32:esp32:esp32c3:CDCOnBoot=cdc --output-dir build .
+      - uses: actions/upload-artifact@v4
+        with: { name: firmware-esp32c3, path: firmware/esp32_marquesina/build/*.bin }
+
+  imagenes:
+    name: Construir imágenes
+    needs: [secretos, revisar]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { servicio: [panel, anomalias] }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        if: github.ref == 'refs/heads/main'
+        with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
+      - uses: docker/build-push-action@v6
+        with:
+          context: services/${{ matrix.servicio }}
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: |
+            ${{ env.REGISTRO }}/${{ matrix.servicio }}-cafe:${{ github.sha }}
+            ${{ env.REGISTRO }}/${{ matrix.servicio }}-cafe:latest
+
+  desplegar:
+    name: Desplegar en el VPS
+    needs: [imagenes, firmware]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: produccion          # requiere aprobación manual en GitHub
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copiar y desplegar por SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VERSION: ${{ github.sha }}
+        run: |
+          install -m 600 /dev/null ~/llave && echo "$VPS_SSH_KEY" > ~/llave
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || (mkdir -p ~/.ssh && ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts)
+          tar -czf - services cloud | ssh -i ~/llave root@"$VPS_HOST" "mkdir -p /opt/a3/despliegue && tar -xzf - -C /opt/a3/despliegue"
+          ssh -i ~/llave root@"$VPS_HOST" "VERSION=$VERSION bash /opt/a3/despliegue/cloud/scripts/desplegar.sh"

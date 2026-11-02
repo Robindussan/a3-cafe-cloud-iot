@@ -1,0 +1,5 @@
+user_id,password_hash,salt,is_superuser
+gateway-rpi,<sha256(clave+sal)>,<sal_hex>,false
+svc-nodered,<sha256(clave+sal)>,<sal_hex>,false
+svc-anomalias,<sha256(clave+sal)>,<sal_hex>,false
+prueba-pc,<sha256(clave+sal)>,<sal_hex>,false

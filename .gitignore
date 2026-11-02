@@ -1,0 +1,16 @@
+# Secretos: nunca al repositorio
+.env
+*.env
+!*.env.example
+secrets.h
+*.key
+*.pem
+!**/ca_publica*.pem
+passwd
+
+# Capturas y datos locales
+*.pcapng
+*.pcap
+__pycache__/
+.venv/
+.pio/

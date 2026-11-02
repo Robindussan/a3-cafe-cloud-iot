@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Base de datos de alta eficiencia para el Fog Buffer
+  fog_db:
+    image: postgres:14.24-alpine
+    container_name: fog_db
+    restart: always
+    environment:
+      - POSTGRES_DB=fog_buffer
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - iot_network
+
+networks:
+  iot_network:
+    external: true
+
+volumes:
+  postgres_data:

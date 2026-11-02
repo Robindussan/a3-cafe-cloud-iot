@@ -1,0 +1,8 @@
+// Copiar como ca_fog.h. Lo genera la Fase 2 (PKI de la finca en la Raspberry):
+// es el certificado PÚBLICO de la CA de la finca con el que el ESP32 verifica al NanoMQ.
+#pragma once
+static const char CA_FOG_PEM[] = R"PEM(
+-----BEGIN CERTIFICATE-----
+...certificado de la CA de la finca (ca_finca.crt)...
+-----END CERTIFICATE-----
+)PEM";

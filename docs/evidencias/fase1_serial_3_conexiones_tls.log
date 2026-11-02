@@ -1,0 +1,21 @@
+﻿
+[RTC] Hora inicial desde el DS3231: 1793575114 (UTC)
+[WiFi] Buscando redes...
+  >> Duscanet                  -68 dBm  canal 11
+     Fernando Medina           -79 dBm  canal 11
+     JAC Peñas Blancas        -86 dBm  canal  9
+[WiFi] Conectando a Duscanet
+[WiFi] Conectado. IP 192.168.101.102  RSSI -64 dBm  canal 11
+[MEM] Heap libre antes de TLS: 205912 B
+[Sensores] El MQ-7 requiere ~2 min de precalentamiento para estabilizar
+[marquesina-01] Conectando a mqtt.agrotecnet.cloud:8883 (TLS) ... conectado. Heap libre 162828 B (esta conexión usó ~43084 B)
+[marquesina-01] estado -> {"id":"marquesina-01","estado":"online","ts":1793575123921,"fw":"3.0.0","modo":"nube-prueba","ip":"192.168.101.102","rssi":-68,"heap":159852,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-01] telemetria (ok) -> {"id":"marquesina-01","ts":1793575123994,"seq":1,"temp":32.6,"hr":48.2,"lux":2,"co":12.9,"rssi":-68,"m":"c"}
+[marquesina-02] Conectando a mqtt.agrotecnet.cloud:8883 (TLS) ... conectado. Heap libre 117624 B (esta conexión usó ~40124 B)
+[marquesina-02] estado -> {"id":"marquesina-02","estado":"online","ts":1793575126686,"fw":"3.0.0","modo":"nube-prueba","ip":"192.168.101.102","rssi":-67,"heap":114648,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-03] Conectando a mqtt.agrotecnet.cloud:8883 (TLS) ... conectado. Heap libre 77492 B (esta conexión usó ~42552 B)
+[marquesina-03] estado -> {"id":"marquesina-03","estado":"online","ts":1793575129760,"fw":"3.0.0","modo":"nube-prueba","ip":"192.168.101.102","rssi":-67,"heap":74780,"periodo_s":10,"banda":true,"latido_s":300,"enviados":0,"rtc":"ok"}
+[marquesina-02] telemetria (ok) -> {"id":"marquesina-02","ts":1793575133998,"seq":1,"temp":33.7,"hr":45.1,"lux":2,"co":13.5,"rssi":-67,"m":"c"}
+[marquesina-03] telemetria (ok) -> {"id":"marquesina-03","ts":1793575134002,"seq":1,"temp":31.7,"hr":50.5,"lux":3,"co":12.7,"rssi":-67,"m":"c"}
+[NTP] Hora sincronizada con pool.ntp.org: 1793593148 (UTC), DS3231 ajustado
+

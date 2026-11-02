@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  nodered:
+    image: nodered/node-red:5.0.8
+    container_name: nodered
+    restart: always
+    env_file:
+      - /root/a3_secretos/nodered.env   # PG_USER/PG_PASS, CALLMEBOT_* (fuera del repositorio)
+    environment:
+      - TZ=America/Bogota
+    volumes:
+      - nodered_data:/data
+    networks:
+      - iot_network
+
+volumes:
+  nodered_data:
+
+networks:
+  iot_network:
+    external: true

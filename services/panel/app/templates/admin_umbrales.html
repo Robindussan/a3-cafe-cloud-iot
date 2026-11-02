@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Umbrales{% endblock %}
+{% block encabezado %}Umbrales de alerta{% endblock %}
+{% block subtitulo %}"*" aplica a todas las marquesinas; una fila propia lo reemplaza. Node-RED los recarga cada minuto.{% endblock %}
+{% block acciones %}{% endblock %}
+{% block contenido %}
+{% if aviso %}<div class="aviso-barra">{{ aviso }}</div>{% endif %}
+{% macro formulario(f, nueva=False) %}
+<form class="tarjeta" method="post" action="/admin/umbrales">
+  <div class="tit"><h2>{{ 'Por defecto (todas)' if f.marquesina == '*' else (f.marquesina or 'Nueva excepción por marquesina') }}</h2>
+    {% if f.actualizado %}<span class="faint" style="font-size:12.5px">Actualizado {{ f.actualizado.astimezone(tz).strftime('%d/%m %H:%M') }} por {{ f.actualizado_por }}</span>{% endif %}</div>
+  <div class="cuerpo form-fila">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    {% if nueva %}<label>Marquesina<select name="marquesina">{% for m in todas %}<option value="{{ m.id }}">{{ m.nombre }}</option>{% endfor %}</select></label>
+    {% else %}<input type="hidden" name="marquesina" value="{{ f.marquesina }}">{% endif %}
+    <label>Temp. máx (°C)<input name="temp_max" value="{{ f.temp_max if f.temp_max is not none else 50 }}" inputmode="decimal" size="6"></label>
+    <label>Temp. mín (°C)<input name="temp_min" value="{{ f.temp_min if f.temp_min is not none else '' }}" inputmode="decimal" size="6" placeholder="opcional"></label>
+    <label>HR máx (%)<input name="hr_max" value="{{ f.hr_max if f.hr_max is not none else 65 }}" inputmode="decimal" size="6"></label>
+    <label class="check"><input type="checkbox" name="hr_solo_dia" {{ 'checked' if f.hr_solo_dia is none or f.hr_solo_dia }}>HR solo de día</label>
+    <label>Lux "de día"<input name="lux_dia" value="{{ f.lux_dia or 1000 }}" inputmode="numeric" size="7"></label>
+    <label>CO máx (ppm)<input name="co_max" value="{{ f.co_max if f.co_max is not none else 35 }}" inputmode="decimal" size="6"></label>
+    <label>Sin datos (min)<input name="offline_min" value="{{ f.offline_min or 12 }}" inputmode="numeric" size="5"></label>
+    <label>Antirebote (min)<input name="antirebote_min" value="{{ f.antirebote_min or 10 }}" inputmode="numeric" size="5"></label>
+    <button class="boton primario" name="accion" value="guardar">Guardar</button>
+    {% if not nueva and f.marquesina != '*' %}<button class="boton peligro" name="accion" value="eliminar">Quitar excepción</button>{% endif %}
+  </div>
+</form>
+{% endmacro %}
+{% for f in filas %}{{ formulario(f) }}{% endfor %}
+{{ formulario({'marquesina': None}, nueva=True) }}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block titulo %}Usuarios{% endblock %}
+{% block encabezado %}Usuarios y perfiles{% endblock %}
+{% block subtitulo %}Administrador: todo · Técnico: todas las marquesinas y alertas · Caficultor: solo sus marquesinas{% endblock %}
+{% block acciones %}{% endblock %}
+{% block contenido %}
+{% if aviso %}<div class="aviso-barra">{{ aviso }}</div>{% endif %}
+<div class="tarjeta">
+  <div class="tit"><h2>Nuevo usuario</h2></div>
+  <form class="cuerpo form-fila" method="post" action="/admin/usuarios">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <label>Usuario<input name="usuario" pattern="[a-z0-9._\-]{3,32}" required placeholder="ej. jperez"></label>
+    <label>Nombre<input name="nombre" required placeholder="Juan Pérez"></label>
+    <label>Perfil<select name="rol">{% for r in roles %}<option value="{{ r }}" {{ 'selected' if r == 'caficultor' }}>{{ NOMBRES_ROL[r] }}</option>{% endfor %}</select></label>
+    <label>Contraseña (10+)<input name="clave" type="password" minlength="10" required autocomplete="new-password"></label>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">{% for m in todas %}<label class="check"><input type="checkbox" name="marquesinas" value="{{ m.id }}">{{ m.nombre }}</label>{% endfor %}</div>
+    <button class="boton primario">Crear</button>
+  </form>
+</div>
+<div class="tarjeta">
+  <div class="cuerpo tabla-scroll">
+    <table>
+      <thead><tr><th>Usuario</th><th>Perfil</th><th>Marquesinas (caficultor)</th><th>Activo</th><th>Nueva clave</th><th>Último ingreso</th><th></th></tr></thead>
+      <tbody>
+      {% for x in usuarios %}
+      <tr>
+        {% set fid = 'f-' ~ x.id %}
+        <td><b>{{ x.usuario }}</b><br><span class="faint">{{ x.nombre }}</span>
+          {% if x.intentos_fallidos %}<br><span class="pastilla p-aviso">{{ x.intentos_fallidos }} intentos fallidos</span>{% endif %}
+          <form id="{{ fid }}" method="post" action="/admin/usuarios/{{ x.id }}"><input type="hidden" name="csrf" value="{{ csrf }}"></form></td>
+        <td><select name="rol" form="{{ fid }}">{% for r in roles %}<option value="{{ r }}" {{ 'selected' if r == x.rol }}>{{ NOMBRES_ROL[r] }}</option>{% endfor %}</select></td>
+        <td>{% for m in todas %}<label class="check" style="display:inline-flex;margin-right:10px"><input type="checkbox" form="{{ fid }}" name="marquesinas" value="{{ m.id }}" {{ 'checked' if m.id in x.marquesinas }}>{{ m.id[-2:] }}</label>{% endfor %}</td>
+        <td><input type="checkbox" form="{{ fid }}" name="activo" {{ 'checked' if x.activo }}></td>
+        <td><input name="clave" form="{{ fid }}" type="password" minlength="10" placeholder="sin cambio" autocomplete="new-password" style="width:140px"></td>
+        <td class="num faint">{{ x.ultimo_ingreso.astimezone(tz).strftime('%d/%m %H:%M') if x.ultimo_ingreso else 'nunca' }}</td>
+        <td style="white-space:nowrap"><button class="boton chico" form="{{ fid }}">Guardar</button></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="tarjeta">
+  <div class="tit"><h2>Eliminar usuario</h2></div>
+  <div class="cuerpo form-fila">
+    {% for x in usuarios if x.id != u.id %}
+    <form method="post" action="/admin/usuarios/{{ x.id }}/eliminar"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="boton chico peligro">Eliminar {{ x.usuario }}</button></form>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

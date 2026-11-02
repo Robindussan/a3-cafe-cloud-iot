@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:2.30.2-pg16
+    container_name: timescaledb
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=iot_db
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    networks:
+      - iot_network
+
+volumes:
+  timescaledb_data:
+
+networks:
+  iot_network:
+    external: true

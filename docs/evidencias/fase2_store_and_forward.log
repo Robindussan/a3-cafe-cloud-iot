@@ -1,0 +1,21 @@
+# Prueba store-and-forward 02/11/2026: corte de 90 s (13:36:34 a 13:38:05) entre la Raspberry y el VPS.
+# marquesina-01 sin banda muerta (1 msg cada 10 s). Columnas: llegada_epoch mensaje
+1793644581 {"id":"marquesina-01","ts":1793644581732,"seq":21,"temp":34.8,"hr":45.5,"lux":3,"co":9.6,"rssi":-79,"m":"p"}
+1793644592 {"id":"marquesina-01","ts":1793644591735,"seq":22,"temp":34.8,"hr":45.6,"lux":2,"co":9.5,"rssi":-82,"m":"p"}
+1793644692 {"id":"marquesina-01","ts":1793644691784,"seq":32,"temp":35.1,"hr":45.1,"lux":2,"co":9.6,"rssi":-81,"m":"p"}
+1793644692 {"id":"marquesina-01","ts":1793644611751,"seq":24,"temp":34.9,"hr":45.4,"lux":2,"co":9.5,"rssi":-81,"m":"p"}
+1793644697 {"id":"marquesina-01","ts":1793644621751,"seq":25,"temp":35,"hr":45.5,"lux":2,"co":9.6,"rssi":-77,"m":"p"}
+1793644702 {"id":"marquesina-01","ts":1793644701785,"seq":33,"temp":35.1,"hr":45.4,"lux":2,"co":9.6,"rssi":-80,"m":"p"}
+1793644702 {"id":"marquesina-01","ts":1793644631751,"seq":26,"temp":35,"hr":46.1,"lux":2,"co":9.8,"rssi":-79,"m":"p"}
+1793644707 {"id":"marquesina-01","ts":1793644641751,"seq":27,"temp":35,"hr":45.6,"lux":2,"co":9.7,"rssi":-83,"m":"p"}
+1793644712 {"id":"marquesina-01","ts":1793644711794,"seq":34,"temp":35.1,"hr":45.3,"lux":2,"co":9.6,"rssi":-81,"m":"p"}
+1793644712 {"id":"marquesina-01","ts":1793644651759,"seq":28,"temp":35,"hr":45.7,"lux":2,"co":9.7,"rssi":-81,"m":"p"}
+1793644717 {"id":"marquesina-01","ts":1793644661767,"seq":29,"temp":35,"hr":45.2,"lux":2,"co":9.7,"rssi":-84,"m":"p"}
+1793644722 {"id":"marquesina-01","ts":1793644721794,"seq":35,"temp":35,"hr":45.1,"lux":2,"co":9.5,"rssi":-81,"m":"p"}
+1793644722 {"id":"marquesina-01","ts":1793644671775,"seq":30,"temp":35,"hr":45.1,"lux":2,"co":9.6,"rssi":-81,"m":"p"}
+1793644727 {"id":"marquesina-01","ts":1793644681775,"seq":31,"temp":35,"hr":45.2,"lux":2,"co":9.5,"rssi":-81,"m":"p"}
+1793644732 {"id":"marquesina-01","ts":1793644731802,"seq":36,"temp":35.1,"hr":45.3,"lux":2,"co":9.5,"rssi":-81,"m":"p"}
+1793644742 {"id":"marquesina-01","ts":1793644741811,"seq":37,"temp":35.1,"hr":45.4,"lux":2,"co":9.6,"rssi":-83,"m":"p"}
+1793644752 {"id":"marquesina-01","ts":1793644751811,"seq":38,"temp":35.1,"hr":45.4,"lux":2,"co":9.7,"rssi":-81,"m":"p"}
+1793644762 {"id":"marquesina-01","ts":1793644761811,"seq":39,"temp":35,"hr":45.1,"lux":2,"co":9.6,"rssi":-82,"m":"p"}
+1793644772 {"id":"marquesina-01","ts":1793644771820,"seq":40,"temp":35.1,"hr":45.2,"lux":2,"co":9.5,"rssi":-81,"m":"p"}

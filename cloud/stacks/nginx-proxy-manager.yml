@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:2.16.0'
+    container_name: nginx-proxy-manager
+    restart: always
+    ports:
+      - '80:80'     # Tráfico HTTP web normal
+      - '443:443'   # Tráfico HTTPS seguro
+    volumes:
+      - npm_data:/data
+      - npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - iot_network
+
+volumes:
+  npm_data:
+  npm_letsencrypt:
+
+networks:
+  iot_network:
+    external: true

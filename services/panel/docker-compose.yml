@@ -1,0 +1,21 @@
+# Panel web del secado de café. Sin puertos publicados: NPM lo sirve en
+# https://panel.agrotecnet.cloud -> panel:8000 por la red interna iot_network.
+services:
+  panel:
+    build: .
+    image: agrotecnet/panel-cafe:1.0.0
+    container_name: panel
+    restart: always
+    env_file:
+      - /root/a3_secretos/panel.env   # PG_USER=app_panel, PG_PASS, SESSION_SECRET (fuera del repositorio)
+    environment:
+      - TZ=America/Bogota
+    read_only: true
+    tmpfs:
+      - /tmp
+    networks:
+      - iot_network
+
+networks:
+  iot_network:
+    external: true

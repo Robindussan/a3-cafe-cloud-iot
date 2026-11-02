@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingresar · Secado de café</title>
+  <link rel="icon" href="/static/img/grano.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/panel.css">
+</head>
+<body>
+<div class="login">
+  <section class="arte">
+    <div class="marca">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="10" fill="#2b1d12" stroke="#45372a"/>
+        <ellipse cx="17" cy="17" rx="7.5" ry="10.5" transform="rotate(30 17 17)" fill="none" stroke="#e0a96d" stroke-width="1.8"/>
+        <path d="M12.5 9.5c4 3 1 11 9 15" fill="none" stroke="#e0a96d" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div><b>AgroTecnet</b><span>Monitoreo inteligente del secado de café</span></div>
+    </div>
+    <!-- Marquesina en alambrado (perspectiva isométrica) -->
+    <svg class="marquesina" viewBox="0 0 620 330" aria-hidden="true">
+      <g class="trazo t2">
+        <path d="M40 270 L330 320 L590 250 L300 205 Z"/>
+        <path d="M60 268 L320 312 M90 262 L350 306 M120 256 L380 300 M150 250 L410 294 M180 244 L440 288 M210 238 L470 282 M240 232 L500 276 M270 226 L530 270"/>
+      </g>
+      <g class="trazo">
+        <path d="M40 270 L40 205 M330 320 L330 255 M590 250 L590 185 M300 205 L300 140"/>
+        <path d="M40 205 Q 55 90 185 70 Q 290 60 300 140"/>
+        <path d="M330 255 Q 345 140 475 120 Q 580 110 590 185"/>
+        <path d="M112 237 Q 127 122 257 102 Q 362 92 372 172" class="t2"/>
+        <path d="M185 254 Q 200 139 330 119 Q 435 109 445 189" class="t2"/>
+        <path d="M257 270 Q 272 155 402 135 Q 507 125 517 205" class="t2"/>
+        <path d="M40 205 L330 255 M300 140 L590 185 M185 70 L475 120 M95 118 L385 168 M262 82 L552 132"/>
+      </g>
+      <g class="trazo t3">
+        <path d="M95 250 L300 285 L420 255 L215 220 Z M95 250 L95 262 M300 285 L300 297 M420 255 L420 267"/>
+        <path d="M230 222 L435 257 L555 227 L350 192 Z M435 257 L435 269 M555 227 L555 239"/>
+      </g>
+      <g fill="#e0a96d"><circle cx="315" cy="180" r="4"/></g>
+      <circle cx="315" cy="180" r="12" fill="none" stroke="#e0a96d" stroke-opacity=".5"/>
+      <circle cx="540" cy="40" r="18" fill="none" stroke="#f2c14e"/>
+      <path d="M540 10v-8M540 78v-8M510 40h-8M578 40h-8M519 19l-6-6M567 67l-6-6M561 19l6-6M513 67l6-6" stroke="#f2c14e" fill="none"/>
+    </svg>
+    <div>
+      <h2>Cada marquesina, en tiempo real y en su gemelo digital.</h2>
+      <p>Temperatura, humedad, radiación solar y CO del secado de café pergamino, con alertas e histórico para entrenar modelos de tiempo de secado.</p>
+      <p class="autor">Desarrollado por <b>Ing. Robin Mauricio Dussan</b></p>
+    </div>
+  </section>
+  <section class="caja">
+    <form method="post" action="/login" autocomplete="on">
+      <div>
+        <h1>Ingresar</h1>
+        <p class="muted">Use la cuenta que le entregó la asociación.</p>
+      </div>
+      {% if error %}<div class="error-barra">{{ error }}</div>{% endif %}
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <label>Usuario<input name="usuario" value="{{ usuario or '' }}" autocomplete="username" required autofocus></label>
+      <label>Contraseña<input name="clave" type="password" autocomplete="current-password" required></label>
+      <button class="boton primario" type="submit">Ingresar</button>
+      <p class="faint" style="font-size:12.5px">Conexión cifrada (HTTPS). Tras 5 intentos fallidos la cuenta se bloquea 15 minutos.</p>
+    </form>
+  </section>
+</div>
+</body>
+</html>
