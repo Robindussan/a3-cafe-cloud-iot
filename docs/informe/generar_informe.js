@@ -91,7 +91,7 @@ const portada = [
     text: "Monitoreo Inteligente del Secado de Café en Marquesinas: Solución Cloud-IoT de Extremo a Extremo sobre Infraestructura Propia",
     bold: true, size: 28 })] }),
   ...["Ing. Robin Mauricio Dussán Medina", "Corporación Universitaria del Huila (CORHUILA)", "Integración Cloud en IoT [G1-2026B]",
-      "Actividad de aprendizaje 3 · Proyecto integrador (Unidad 3)", "Docente: Jhon", D.fecha]
+      "Actividad de aprendizaje 3 · Proyecto integrador (Unidad 3)", "Docente: Jhon Ríos", D.fecha]
     .map(t => new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 60 }, children: [new TextRun(t)] })),
   new Paragraph({ children: [new PageBreak()] }),
 ];
