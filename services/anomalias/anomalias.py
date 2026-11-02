@@ -7,7 +7,7 @@ la lectura para poder unirla al dataset de ML.
 
     z = (x - media) / desviación      con media y desviación de la ventana SIN incluir x
 
-Una lectura anómala no entra a la ventana, para que un pico no "contamine" la referencia.
+Toda lectura entra a la ventana (un pico se diluye; un cambio de nivel se absorbe).
 Al arrancar la ventana se precarga con el histórico reciente de TimescaleDB.
 """
 import json
@@ -29,7 +29,7 @@ UMBRAL_Z = float(os.environ.get("UMBRAL_Z", "3.0"))
 # Desviación mínima por variable: evita marcar como anomalía el ruido de una señal casi plana
 DESV_MIN = {"temp": 0.3, "hr": 1.0, "lux": 50.0, "co": 1.0}
 VARIABLES = tuple(DESV_MIN)
-METODO = f"zscore_v{VENTANA}_u{UMBRAL_Z:g}"
+METODO = f"zscore_v{VENTANA}_u{UMBRAL_Z:g}_r1.1"
 
 ventanas = defaultdict(lambda: deque(maxlen=VENTANA))
 db = psycopg.connect(host=os.environ.get("PG_HOST", "timescaledb"), dbname=os.environ.get("PG_DB", "iot_db"),
@@ -64,7 +64,9 @@ def evaluar(marquesina, ts_ms, lectura):
             if abs(z) >= UMBRAL_Z:
                 anomalias.append({"variable": var, "valor": x, "z": round(z, 2), "media": round(media, 2),
                                   "desv": round(desv, 3)})
-                continue          # no se agrega a la ventana
+        # Toda lectura entra a la ventana: un pico aislado se diluye entre las VENTANA lecturas y un
+        # cambio de nivel real se absorbe en pocos minutos. (Excluir las anómalas congelaba la
+        # referencia y, ante una deriva lenta del MQ-7, marcaba cada lectura como anomalía.)
         v.append(float(x))
     return anomalias
 

@@ -1,0 +1,86 @@
+{
+  "minutos_por_fase": 60.0,
+  "fase_A": {
+    "nombre": "A_sin_banda_muerta",
+    "inicio_epoch": 1793653275.830532,
+    "fin_epoch": 1793656875.8307493,
+    "horas": 1.0,
+    "mensajes": 1080,
+    "mensajes_h": 1080.0,
+    "bytes_carga": 117671,
+    "bytes_aire_estimados": 184631,
+    "bytes_aire_h": 184631,
+    "latencia_p50_ms": 36,
+    "latencia_p95_ms": 1383,
+    "por_marquesina": {
+      "marquesina-01": {
+        "mensajes": 360,
+        "mensajes_h": 360.0,
+        "bytes_carga": 39264,
+        "motivos": {
+          "p": 360
+        }
+      },
+      "marquesina-02": {
+        "mensajes": 360,
+        "mensajes_h": 360.0,
+        "bytes_carga": 39193,
+        "motivos": {
+          "p": 360
+        }
+      },
+      "marquesina-03": {
+        "mensajes": 360,
+        "mensajes_h": 360.0,
+        "bytes_carga": 39214,
+        "motivos": {
+          "p": 360
+        }
+      }
+    }
+  },
+  "fase_B": {
+    "nombre": "B_con_banda_muerta",
+    "inicio_epoch": 1793656905.8312528,
+    "fin_epoch": 1793660505.8314977,
+    "horas": 1.0,
+    "mensajes": 120,
+    "mensajes_h": 120.0,
+    "bytes_carga": 13243,
+    "bytes_aire_estimados": 20683,
+    "bytes_aire_h": 20683,
+    "latencia_p50_ms": 58,
+    "latencia_p95_ms": 87,
+    "por_marquesina": {
+      "marquesina-01": {
+        "mensajes": 39,
+        "mensajes_h": 39.0,
+        "bytes_carga": 4306,
+        "motivos": {
+          "c": 37,
+          "l": 2
+        }
+      },
+      "marquesina-02": {
+        "mensajes": 41,
+        "mensajes_h": 41.0,
+        "bytes_carga": 4516,
+        "motivos": {
+          "c": 39,
+          "l": 2
+        }
+      },
+      "marquesina-03": {
+        "mensajes": 40,
+        "mensajes_h": 40.0,
+        "bytes_carga": 4421,
+        "motivos": {
+          "c": 38,
+          "l": 2
+        }
+      }
+    }
+  },
+  "reduccion_mensajes_pct": 88.9,
+  "reduccion_bytes_pct": 88.8
+}

@@ -98,8 +98,9 @@
   setInterval(actualizarSli, 60000);
   // ECharts carga en paralelo (async): los datos se muestran antes y las mini gráficas al llegar
   const dibujarSparks = () => document.querySelectorAll("[data-spark]").forEach(el => sparkline(el.dataset.spark));
+  // Este script corre antes de que exista la etiqueta de ECharts: se espera a la carga completa
   if (window.echarts) dibujarSparks();
-  else document.getElementById("echarts").addEventListener("load", dibujarSparks);
+  else window.addEventListener("load", dibujarSparks);
   setInterval(dibujarSparks, 60000);
   window.addEventListener("resize", () => Object.values(sparks).forEach(s => s.resize()));
 })();

@@ -20,11 +20,11 @@ text{font-family:Segoe UI,Arial,sans-serif}
 <line x1="340" y1="142" x2="340" y2="178" class="arr" marker-end="url(#arrow)"/>
 <text class="ts" x="352" y="160" dominant-baseline="central">WiFi propia de la RPi · MQTT/TLS 8883 · CA de la finca</text>
 <g class="c-purple"><rect x="40" y="182" width="600" height="120" rx="16" stroke-width="0.5"/>
-<text class="th" x="340" y="204" text-anchor="middle" dominant-baseline="central">Fog · Raspberry Pi 3 B+ (192.168.101.100)</text>
-<text class="ts" x="340" y="222" text-anchor="middle" dominant-baseline="central">AP WiFi 192.168.50.1 (nodos) · eth0 al router (Internet)</text></g>
-<g class="c-gray"><rect x="65" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="150" y="256" text-anchor="middle" dominant-baseline="central">NanoMQ</text><text class="ts" x="150" y="274" text-anchor="middle" dominant-baseline="central">broker local + bridge</text></g>
-<g class="c-gray"><rect x="255" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="340" y="256" text-anchor="middle" dominant-baseline="central">Node-RED</text><text class="ts" x="340" y="274" text-anchor="middle" dominant-baseline="central">agregación en el borde</text></g>
-<g class="c-gray"><rect x="445" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="530" y="256" text-anchor="middle" dominant-baseline="central">PostgreSQL</text><text class="ts" x="530" y="274" text-anchor="middle" dominant-baseline="central">buffer offline</text></g>
+<text class="th" x="340" y="204" text-anchor="middle" dominant-baseline="central">Fog · Raspberry Pi 3 B+ (raspberry-robin.local)</text>
+<text class="ts" x="340" y="222" text-anchor="middle" dominant-baseline="central">AP WiFi 192.168.50.1 (nodos sin Internet) · eth0 al router</text></g>
+<g class="c-gray"><rect x="65" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="150" y="256" text-anchor="middle" dominant-baseline="central">NanoMQ</text><text class="ts" x="150" y="274" text-anchor="middle" dominant-baseline="central">TLS · ACL · bridge con caché</text></g>
+<g class="c-gray"><rect x="255" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="340" y="256" text-anchor="middle" dominant-baseline="central">Node-RED</text><text class="ts" x="340" y="274" text-anchor="middle" dominant-baseline="central">flujos locales · login</text></g>
+<g class="c-gray"><rect x="445" y="240" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="530" y="256" text-anchor="middle" dominant-baseline="central">PostgreSQL</text><text class="ts" x="530" y="274" text-anchor="middle" dominant-baseline="central">respaldo local</text></g>
 <line x1="340" y1="304" x2="340" y2="340" class="arr" marker-end="url(#arrow)"/>
 <text class="ts" x="352" y="322" dominant-baseline="central">Bridge MQTT/TLS 8883 · store-and-forward · Internet</text>
 <g class="c-coral"><rect x="40" y="344" width="600" height="250" rx="16" stroke-width="0.5"/>
@@ -32,7 +32,7 @@ text{font-family:Segoe UI,Arial,sans-serif}
 <text class="ts" x="340" y="384" text-anchor="middle" dominant-baseline="central">179.236.81.29 · Docker · expuestos solo 22, 80, 443, 8883</text></g>
 <g class="c-gray"><rect x="65" y="402" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="150" y="418" text-anchor="middle" dominant-baseline="central">EMQX</text><text class="ts" x="150" y="436" text-anchor="middle" dominant-baseline="central">TLS · auth · ACL</text></g>
 <g class="c-gray"><rect x="255" y="402" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="340" y="418" text-anchor="middle" dominant-baseline="central">Node-RED</text><text class="ts" x="340" y="436" text-anchor="middle" dominant-baseline="central">ingesta · reglas</text></g>
-<g class="c-gray"><rect x="445" y="402" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="530" y="418" text-anchor="middle" dominant-baseline="central">Anomalías (Python)</text><text class="ts" x="530" y="436" text-anchor="middle" dominant-baseline="central">puntaje z / iForest</text></g>
+<g class="c-gray"><rect x="445" y="402" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="530" y="418" text-anchor="middle" dominant-baseline="central">Anomalías (Python)</text><text class="ts" x="530" y="436" text-anchor="middle" dominant-baseline="central">puntaje z en ventana</text></g>
 <g class="c-gray"><rect x="65" y="470" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="150" y="486" text-anchor="middle" dominant-baseline="central">TimescaleDB</text><text class="ts" x="150" y="504" text-anchor="middle" dominant-baseline="central">series de tiempo</text></g>
 <g class="c-gray"><rect x="255" y="470" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="340" y="486" text-anchor="middle" dominant-baseline="central">Panel web FastAPI</text><text class="ts" x="340" y="504" text-anchor="middle" dominant-baseline="central">3 perfiles · login</text></g>
 <g class="c-gray"><rect x="445" y="470" width="170" height="48" rx="8" stroke-width="0.5"/><text class="th" x="530" y="486" text-anchor="middle" dominant-baseline="central">Nginx Proxy Manager</text><text class="ts" x="530" y="504" text-anchor="middle" dominant-baseline="central">HTTPS Let's Encrypt</text></g>
@@ -42,6 +42,6 @@ text{font-family:Segoe UI,Arial,sans-serif}
 <line x1="340" y1="452" x2="340" y2="467" class="arr" marker-end="url(#arrow)"/>
 <line x1="230" y1="596" x2="230" y2="626" class="arr" marker-end="url(#arrow)"/>
 <line x1="450" y1="626" x2="450" y2="596" class="arr" marker-end="url(#arrow)"/>
-<g class="c-gray"><rect x="140" y="630" width="180" height="52" rx="8" stroke-width="0.5"/><text class="th" x="230" y="647" text-anchor="middle" dominant-baseline="central">WhatsApp</text><text class="ts" x="230" y="666" text-anchor="middle" dominant-baseline="central">alertas al caficultor</text></g>
+<g class="c-gray"><rect x="140" y="630" width="180" height="52" rx="8" stroke-width="0.5"/><text class="th" x="230" y="647" text-anchor="middle" dominant-baseline="central">Telegram (+ WhatsApp)</text><text class="ts" x="230" y="666" text-anchor="middle" dominant-baseline="central">alertas al celular</text></g>
 <g class="c-gray"><rect x="360" y="630" width="180" height="52" rx="8" stroke-width="0.5"/><text class="th" x="450" y="647" text-anchor="middle" dominant-baseline="central">Usuarios</text><text class="ts" x="450" y="666" text-anchor="middle" dominant-baseline="central">admin · técnico · caficultor</text></g>
 </svg>

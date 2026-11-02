@@ -1,0 +1,19 @@
+# Evidencia TLS · tramo ESP32 -> Raspberry (wlan0, tcp 8883) · 02/11/2026 18:18 hora Colombia
+# Se reinició el ESP32 por comando MQTT para capturar el saludo TLS de las 3 marquesinas
+
+frame.number	ip.src	ip.dst	tls.handshake.type	tls.handshake.extensions_server_name	tls.handshake.ciphersuite	x509sat.uTF8String
+9	192.168.50.227	192.168.50.1	1	fog.finca	(suites ofrecidas)	
+11	192.168.50.1	192.168.50.227	2		0xc02c	
+12	192.168.50.1	192.168.50.227	11,12,14			AgroTecnet,Finca,CA Finca AgroTecnet,AgroTecnet,fog.finca
+33	192.168.50.227	192.168.50.1	1	fog.finca	(suites ofrecidas)	
+35	192.168.50.1	192.168.50.227	2		0xc02c	
+36	192.168.50.1	192.168.50.227	11,12,14			AgroTecnet,Finca,CA Finca AgroTecnet,AgroTecnet,fog.finca
+57	192.168.50.227	192.168.50.1	1	fog.finca	(suites ofrecidas)	
+59	192.168.50.1	192.168.50.227	2		0xc02c	
+60	192.168.50.1	192.168.50.227	11,12,14			AgroTecnet,Finca,CA Finca AgroTecnet,AgroTecnet,fog.finca
+  tipo 1 = ClientHello, 2 = ServerHello, 11 = Certificate. Suite 0xc02c = TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 (TLS 1.2)
+  Certificado del servidor: CN=fog.finca, emitido por CN=CA Finca AgroTecnet (EC P-256)
+
+Registros TLS de datos de aplicación: 20
+Paquetes decodificables como MQTT: 0
+Apariciones del texto 'marquesina' en la captura: 0

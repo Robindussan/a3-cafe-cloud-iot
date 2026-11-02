@@ -9,7 +9,7 @@ marquesina y variable (temp, hr, lux, co) compara la lectura con las últimas `V
   la envía a Telegram.
 - La guarda en la tabla `anomalias` (rol `app_anomalias`) con el mismo `ts` de la lectura → columna `anomalia`
   del dataset de ML del panel. El panel la marca con un rombo violeta en el histórico.
-- La lectura anómala no entra a la ventana (no contamina la referencia). Al arrancar precarga 12 h de TimescaleDB.
+- Toda lectura entra a la ventana: un pico aislado se diluye y un cambio de nivel (p. ej. deriva del MQ-7) se absorbe; v1.0.0 excluía las anómalas y eso congelaba la referencia. Al arrancar precarga 12 h.
 - `desv_mín` por variable (0,3 °C, 1 %, 50 lx, 1 ppm) evita falsos positivos en señales casi planas.
 - Versión del "modelo" = parámetros (`metodo = zscore_v60_u3`), fijados en la imagen y en `docker-compose.yml`:
   cambiar el modelo es publicar una imagen nueva (`agrotecnet/anomalias-cafe:x.y.z`).
